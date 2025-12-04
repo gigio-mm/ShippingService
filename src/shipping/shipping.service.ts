@@ -3,10 +3,14 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { CreateShippingDto } from './dto/create-shipping.dto';
 import { Shipping } from './entities/shipping.entity';
+import { PrismaService } from '../prisma.service';
 
 @Injectable()
 export class ShippingService {
-  constructor(private readonly httpService: HttpService) {}
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   async calculateShipping(dto: CreateShippingDto): Promise<Shipping> {
     try {
@@ -19,6 +23,15 @@ export class ShippingService {
       const isCeara = state === 'CE';
       const shippingCost = isCeara ? 0.0 : 50.0;
       const deliveryDays = isCeara ? 3 : 10;
+
+      await this.prisma.shippingLog.create({
+        data: {
+          cep: dto.cep,
+          state,
+          shippingCost,
+          deliveryDays,
+        },
+      });
 
       return new Shipping(dto.cep, state, shippingCost, deliveryDays, dto.product);
     } catch (error) {

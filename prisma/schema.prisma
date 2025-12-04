@@ -1,0 +1,17 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ShippingLog {
+  id           String   @id @default(uuid())
+  cep          String
+  state        String
+  shippingCost Float
+  deliveryDays Int
+  createdAt    DateTime @default(now())
+}
