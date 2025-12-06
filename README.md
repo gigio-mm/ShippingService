@@ -1,98 +1,213 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<div align="center">
+  <h1>📦 SalesFlow - Shipping Service</h1>
+  <p><strong>Microsserviço de Logística e Cálculo de Frete</strong></p>
+  
+  ![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+  ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+  ![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)
+  ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+  ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=white)
+</div>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+---
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Sobre o Projeto
 
-## Description
+O **SalesFlow - Shipping Service** é um microsserviço de logística que atua como **Gateway de Integração** para cálculo de frete. Ele oferece uma solução completa para validação de CEP e cálculo de valores de envio baseados em regras regionais.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+### Funcionalidades Principais
 
-## Project setup
+- 🔍 **Validação de CEP**: Integração com a [BrasilAPI](https://brasilapi.com.br/) para validar e obter informações de localização
+- 💰 **Cálculo de Frete**: Aplicação de regras de negócio regionais para definição de valores e prazos
+- 📊 **Histórico de Consultas**: Armazenamento de todas as consultas em banco de dados PostgreSQL
+- 🎨 **Frontend Embutido**: Interface web desenvolvida com HTML e Bootstrap para facilitar o uso
+- 🚀 **API REST**: Endpoints bem definidos para integração com outros sistemas
 
-```bash
-$ npm install
+---
+
+## 🛠️ Tecnologias
+
+Este projeto foi desenvolvido utilizando as seguintes tecnologias:
+
+- **[NestJS](https://nestjs.com/)** - Framework Node.js progressivo para aplicações server-side
+- **[TypeScript](https://www.typescriptlang.org/)** - Superset JavaScript com tipagem estática
+- **[Prisma ORM](https://www.prisma.io/)** - ORM moderno para Node.js e TypeScript
+- **[PostgreSQL](https://www.postgresql.org/)** - Banco de dados relacional robusto
+- **[HTML/Bootstrap](https://getbootstrap.com/)** - Frontend responsivo e moderno
+- **[BrasilAPI](https://brasilapi.com.br/)** - API pública para validação de CEP
+
+---
+
+## 💼 Regras de Negócio
+
+O serviço aplica tarifas diferenciadas por região, seguindo a tabela abaixo:
+
+| Região | Estado(s) | Valor do Frete | Prazo de Entrega |
+|--------|-----------|----------------|------------------|
+| **Ceará** | CE | **GRÁTIS** 🎉 | 3 dias úteis |
+| **Nordeste** | AL, BA, MA, PB, PE, PI, RN, SE | R$ 20,00 | 5 dias úteis |
+| **Sudeste** | ES, MG, RJ, SP | R$ 35,00 | 7 dias úteis |
+| **Centro-Oeste** | DF, GO, MS, MT | R$ 40,00 | 8 dias úteis |
+| **Sul** | PR, RS, SC | R$ 45,00 | 9 dias úteis |
+| **Norte** | AC, AM, AP, PA, RO, RR, TO | R$ 60,00 | 12 dias úteis |
+
+---
+
+## 🚀 Instalação e Uso
+
+### Pré-requisitos
+
+- Node.js (versão 18 ou superior)
+- npm ou yarn
+- PostgreSQL (local ou remoto)
+
+### Passo a Passo
+
+1. **Clone o repositório**
+   ```bash
+   git clone https://github.com/gigio-mm/ShippingService.git
+   cd ShippingService
+   ```
+
+2. **Instale as dependências**
+   ```bash
+   npm install
+   ```
+
+3. **Configure as variáveis de ambiente**
+   
+   Crie um arquivo `.env` na raiz do projeto:
+   ```env
+   DATABASE_URL="postgresql://usuario:senha@localhost:5432/shipping_db?schema=public"
+   PORT=3000
+   ```
+
+4. **Configure o banco de dados**
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Inicie o servidor em modo de desenvolvimento**
+   ```bash
+   npm run start:dev
+   ```
+
+6. **Acesse a aplicação**
+   - Frontend: `http://localhost:3000`
+   - API: `http://localhost:3000/shipping`
+
+---
+
+## 📡 Endpoints da API
+
+### 1. Calcular Frete
+
+Calcula o valor e prazo de entrega baseado no CEP informado.
+
+**Endpoint:** `POST /shipping`
+
+**Request Body:**
+```json
+{
+  "cep": "60000000"
+}
 ```
 
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+**Response (200 OK):**
+```json
+{
+  "cep": "60000-000",
+  "cidade": "Fortaleza",
+  "estado": "CE",
+  "regiao": "Nordeste",
+  "valorFrete": 0,
+  "prazoEntrega": 3,
+  "mensagem": "Frete grátis para o Ceará!"
+}
 ```
 
-## Run tests
+**Erros Possíveis:**
+- `400 Bad Request` - CEP inválido ou não encontrado
+- `500 Internal Server Error` - Erro ao processar a requisição
 
-```bash
-# unit tests
-$ npm run test
+---
 
-# e2e tests
-$ npm run test:e2e
+### 2. Histórico de Consultas
 
-# test coverage
-$ npm run test:cov
+Retorna os últimos 10 registros de consultas realizadas.
+
+**Endpoint:** `GET /shipping/history`
+
+**Response (200 OK):**
+```json
+[
+  {
+    "id": 1,
+    "cep": "60000-000",
+    "cidade": "Fortaleza",
+    "estado": "CE",
+    "regiao": "Nordeste",
+    "valorFrete": 0,
+    "prazoEntrega": 3,
+    "createdAt": "2025-12-06T10:30:00.000Z"
+  }
+]
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🌐 Deploy
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+O projeto está hospedado e rodando em produção no **[Render](https://shippingservice-jh6x.onrender.com/)**.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+### Configuração para Deploy
+
+1. Conecte seu repositório GitHub ao Render
+2. Configure as variáveis de ambiente no painel do Render:
+   - `DATABASE_URL` - URL do PostgreSQL
+   - `PORT` - Porta da aplicação (configurada automaticamente pelo Render)
+3. O Render executará automaticamente:
+   - `npm install`
+   - `npx prisma generate`
+   - `npx prisma db push`
+   - `npm run build`
+   - `npm run start:prod`
+
+---
+
+## 📂 Estrutura do Projeto
+
+```
+shipping-service/
+├── prisma/
+│   └── schema.prisma          # Schema do banco de dados
+├── public/
+│   └── index.html             # Frontend da aplicação
+├── src/
+│   ├── shipping/
+│   │   ├── dto/
+│   │   │   └── create-shipping.dto.ts
+│   │   ├── entities/
+│   │   │   └── shipping.entity.ts
+│   │   ├── shipping.controller.ts
+│   │   ├── shipping.module.ts
+│   │   └── shipping.service.ts
+│   ├── app.module.ts
+│   ├── main.ts
+│   └── prisma.service.ts
+├── .env                       # Variáveis de ambiente
+├── package.json
+└── README.md
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 👨‍💻 Autor
 
-Check out a few resources that may come in handy when working with NestJS:
+Desenvolvido com 💙 por **gigio-mm**
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/gigio-mm)
 
-## Support
+---
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
