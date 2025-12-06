@@ -16,4 +16,9 @@ export class ShippingController {
   create(@Body() createShippingDto: CreateShippingDto): Promise<Shipping> {
     return this.shippingService.calculateShipping(createShippingDto);
   }
+
+  @Get('history')
+  getHistory() {
+    return this.shippingService.getHistory();
+  }
 }

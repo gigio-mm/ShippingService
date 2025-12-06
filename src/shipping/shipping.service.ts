@@ -40,4 +40,13 @@ export class ShippingService {
       );
     }
   }
+
+  async getHistory() {
+    return this.prisma.shippingLog.findMany({
+      take: 10,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+  }
 }

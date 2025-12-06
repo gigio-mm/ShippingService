@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SalesFlow - Logística</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f0f2f5; padding-top: 40px; }
+        .card { border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header-gradient { background: linear-gradient(90deg, #0d6efd 0%, #0dcaf0 100%); color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="text-center mb-4">
+                    <h2>📦 SalesFlow Logistics</h2>
+                    <p class="text-muted">Microsserviço de Precificação e Prazos</p>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header header-gradient">Novo Cálculo</div>
+                    <div class="card-body">
+                        <form id="calcForm" class="row g-3">
+                            <div class="col-8">
+                                <input type="text" id="cepInput" class="form-control" placeholder="Digite o CEP (ex: 60811-905)" required>
+                            </div>
+                            <div class="col-4">
+                                <button type="submit" class="btn btn-primary w-100">Calcular</button>
+                            </div>
+                        </form>
+
+                        <div id="resultBox" class="alert alert-success mt-3 d-none">
+                            <h4 class="alert-heading">Resultado:</h4>
+                            <p>
+                                📍 <strong>Destino:</strong> <span id="resCity"></span> - <span id="resState"></span><br>
+                                💰 <strong>Frete:</strong> <span id="resCost"></span><br>
+                                🚚 <strong>Prazo:</strong> <span id="resDays"></span> dias úteis
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-white">
+                        <strong>📜 Histórico de Consultas (Banco de Dados)</strong>
+                    </div>
+                    <div class="card-body p-0">
+                        <table class="table table-striped mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>CEP</th>
+                                    <th>UF</th>
+                                    <th>Custo</th>
+                                    <th>Prazo</th>
+                                    <th>Data</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin;
+
+        async function loadHistory() {
+            try {
+                const res = await fetch(`${API_URL}/shipping/history`);
+                const logs = await res.json();
+                
+                const tbody = document.getElementById('historyBody');
+                tbody.innerHTML = '';
+
+                logs.forEach(log => {
+                    const date = new Date(log.createdAt).toLocaleString('pt-BR');
+                    tbody.innerHTML += `
+                        <tr>
+                            <td>${log.cep}</td>
+                            <td>${log.state}</td>
+                            <td>R$ ${log.shippingCost.toFixed(2)}</td>
+                            <td>${log.deliveryDays} dias</td>
+                            <td class="small text-muted">${date}</td>
+                        </tr>
+                    `;
+                });
+            } catch (err) {
+                console.error("Erro ao carregar histórico:", err);
+            }
+        }
+
+
+        document.getElementById('calcForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cep = document.getElementById('cepInput').value;
+            const btn = e.target.querySelector('button');
+            const resultBox = document.getElementById('resultBox');
+
+            btn.disabled = true;
+            btn.innerText = 'Calculando...';
+            resultBox.classList.add('d-none');
+
+            try {
+                const res = await fetch(`${API_URL}/shipping`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cep })
+                });
+
+                if (!res.ok) throw new Error('Erro na API');
+
+                const data = await res.json();
+
+                document.getElementById('resCity').innerText = data.city || 'Desconhecido';
+                document.getElementById('resState').innerText = data.state;
+                document.getElementById('resCost').innerText = data.shippingCost === 0 ? 'GRÁTIS' : `R$ ${data.shippingCost.toFixed(2)}`;
+                document.getElementById('resDays').innerText = data.deliveryDays;
+                
+                resultBox.classList.remove('d-none');
+
+                loadHistory();
+
+            } catch (error) {
+                alert('Erro ao calcular! Verifique o CEP.');
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Calcular';
+            }
+        });
+
+        loadHistory();
+    </script>
+</body>
+</html>
